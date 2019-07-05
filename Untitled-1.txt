@@ -1,0 +1,17 @@
+def jeuneafriqueLinks(html, url):
+    root_url = "http://www.jeuneafrique.com"
+    links = []
+    for i in re.findall('''href=["'](.[^"']+)["']''', html, re.I):
+        full_link = root_url + i
+        # for radio okapi
+        # if date_published in full_link:
+        links.append(full_link)
+    links = sorted(set(links))
+    jeuneafrique_links_final = []
+    for link in links:
+        match = re.search(r'/\d\d\d\d+/\w\w\w\w\w+', link)
+        if match:
+            jeuneafrique_links_final.append(link)
+        else:
+            pass
+    return jeuneafrique_links_final
