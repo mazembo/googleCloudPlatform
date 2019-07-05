@@ -6,6 +6,8 @@ gcloud compute --project=warm-classifier-721 instances create webserver3 --zone=
 
 gcloud compute addresses create network-lb-ip --project=warm-classifier-721 --description=ip\ address\ for\ load\ balancer --region=europe-west1
 
+# get the static IP in a variable 
+STATIC_EXTERNAL_ADDRESS=$(gcloud compute addresses describe network-lb-ip --region 'europe-west1'  --format 'value(address)')
 # create health checks
 gcloud compute --project "warm-classifier-721" http-health-checks create "webserver-health" --description "webserver-health" --port "80" --request-path "/" --check-interval "10" --timeout "5" --unhealthy-threshold "3" --healthy-threshold "2"
 
@@ -21,7 +23,7 @@ gcloud compute target-pools add-instances extloadbalancer \
     --instances webserver1,webserver2,webserver3 \
      --instances-zone=$MY_ZONE1
 #getting the static external IP 
-export STATIC_EXTERNAL_IP=34.76.187.68
+export STATIC_EXTERNAL_IP=STATIC_EXTERNAL_ADDRESS
 # creating forwarding rule 
 gcloud compute forwarding-rules create webserver-rule \
     --region $MY_REGION --ports 80 \
