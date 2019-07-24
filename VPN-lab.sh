@@ -1,5 +1,6 @@
+# this lab sets up two VPN between two subnets in different regions us-east1 and europe-west1 
 # create a first network and subnetworks 
-gcloud compute --project=warm-classifier-721 networks create vpn-network-1 --description="my first network in europe" --subnet-mode=custom
+gcloud compute --project=warm-classifier-721 networks create vpn-network-1 --description="my first network in US East 1" --subnet-mode=custom
 gcloud compute --project=warm-classifier-721 networks subnets create subnet-b --network=vpn-network-2 --region=us-east1 --range=10.1.3.0/24 --enable-private-ip-google-access
 #create the second network and sub-network
 gcloud compute --project=warm-classifier-721 networks create vpn-network-2 --description="my second network in europe" --subnet-mode=custom
@@ -40,13 +41,14 @@ create vpn-2 \
 
 # create a static address
 gcloud compute addresses create --region us-east1 vpn-1-static-ip
+gcloud compute addresses create --region europe-west1 vpn-2-static-ip
 
-# to see the static address 
-gcloud compute addresses list 
+# Put these IP addresses in environment variables 
+
+STATIC_IP_VPN_1=$(gcloud compute addresses describe vpn-1-static-ip --region 'us-east1'  --format 'value(address)') 
+STATIC_IP_VPN_2=$(gcloud compute addresses describe vpn-2-static-ip --region 'europe-west1'  --format 'value(address)')
 
 # export the static address in an environment variable 
-export STATIC_IP_VPN_1=35.231.19.214 
-export STATIC_IP_VPN_2=35.233.10.214 
 
 # create forwarding rules
 gcloud compute \
@@ -135,7 +137,9 @@ routes create route2to1  \
 gcloud compute  routes create route1to2  --network vpn-network-1 --next-hop-vpn-tunnel tunnel1to2 --next-hop-vpn-tunnel-region us-east1 --destination-range 10.5.4.0/24
 gcloud compute  routes create route2to1  --network vpn-network-2 --next-hop-vpn-tunnel tunnel2to1 --next-hop-vpn-tunnel-region europe-west1 --destination-range 10.1.3.0/24
 
-
+#test of the solution 
+# to verify that the tunnels were created: gcloud compute vpn-tunnels list 
+# to verify the VPN works: ssh the server 1 and ping -c 3 <insert server-2's internal IP here> and ssh the server 2 and ping -c 3 <insert server-1's internal IP here> 
 
 
 

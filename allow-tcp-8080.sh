@@ -1,0 +1,1 @@
+gcloud compute --project=sonic-progress-721 firewall-rules create allow-tcp-8080 --description=allow-tcp-8080 --direction=INGRESS --priority=1000 --network=default --action=ALLOW --rules=tcp:8080 --source-ranges=0.0.0.0/0
