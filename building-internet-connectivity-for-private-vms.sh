@@ -57,9 +57,9 @@ gcloud compute firewall-rules create allow-ssh-from-iap \
     --target-tags http-tag \
     --allow tcp:22
 # Test tunneling 
-gcloud beta compute ssh www-1 \
-    --zone us-central1-b \
-    --tunnel-through-iap
+#gcloud beta compute ssh www-1 \
+#    --zone us-central1-b \
+#    --tunnel-through-iap
 # manual step_ add identity aware proxy role under security from the console  to create vms 
 echo "create a nat configuration using cloud router"
 echo "create cloud router instances in each region"
