@@ -1,3 +1,4 @@
+# https://cloud.google.com/solutions/building-internet-connectivity-for-private-vms
 echo "an instance named www-1 in us-central1-bwith a basic startup script"
 gcloud compute instances create www-1 \
     --image-family debian-9 \
@@ -169,6 +170,10 @@ gcloud compute target-http-proxies create http-lb-proxy \
     --url-map web-map
 
 echo "Configure the frontend"
+# get the load balancer ip address 
+lb_ip_address=$(gcloud compute addresses describe lb_ip_address --region 'europe-west1'  --format 'value(address)')
+lb_ipv6_address=$(gcloud compute addresses describe lb_ip_address --region 'europe-west1'  --format 'value(address)')
+
 gcloud compute forwarding-rules create http-cr-rule \
     --address lb_ip_address \
     --global \

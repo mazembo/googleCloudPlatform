@@ -56,6 +56,7 @@ cat > jenkins-agent.json <<EOF
   ]
 }
 EOF
+./packer build jenkins-agent.json
 
 
 
