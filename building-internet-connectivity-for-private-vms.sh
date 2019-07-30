@@ -171,8 +171,8 @@ gcloud compute target-http-proxies create http-lb-proxy \
 
 echo "Configure the frontend"
 # get the load balancer ip address 
-lb_ip_address=$(gcloud compute addresses describe lb-ip-cr --region 'europe-west1'  --format 'value(address)')
-lb_ipv6_address=$(gcloud compute addresses describe lb-ipv6-cr --region 'europe-west1'  --format 'value(address)')
+lb_ip_address=$(gcloud compute addresses describe lb-ip-cr --global  --format 'value(address)')
+lb_ipv6_address=$(gcloud compute addresses describe lb-ipv6-cr --global  --format 'value(address)')
 
 gcloud compute forwarding-rules create http-cr-rule \
     --address lb_ip_address \
