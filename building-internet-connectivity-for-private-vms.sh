@@ -58,9 +58,9 @@ gcloud compute firewall-rules create allow-ssh-from-iap \
     --target-tags http-tag \
     --allow tcp:22
 # Test tunneling 
-#gcloud beta compute ssh www-1 \
-#    --zone us-central1-b \
-#    --tunnel-through-iap
+gcloud beta compute ssh www-1 \
+    --zone us-central1-b \
+    --tunnel-through-iap
 # manual step_ add identity aware proxy role under security from the console  to create vms 
 echo "create a nat configuration using cloud router"
 echo "create cloud router instances in each region"
@@ -175,13 +175,13 @@ lb_ip_address=$(gcloud compute addresses describe lb-ip-cr --global  --format 'v
 lb_ipv6_address=$(gcloud compute addresses describe lb-ipv6-cr --global  --format 'value(address)')
 
 gcloud compute forwarding-rules create http-cr-rule \
-    --address lb_ip_address \
+    --address $lb_ip_cr \
     --global \
     --target-http-proxy http-lb-proxy \
     --ports 80
 
 gcloud compute forwarding-rules create http-cr-ipv6-rule \
-    --address lb_ipv6_address \
+    --address $lb_ipv6_address \
     --global \
     --target-http-proxy http-lb-proxy \
     --ports 80
